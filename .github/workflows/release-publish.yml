@@ -1,9 +1,6 @@
 name: Publish Release Packages
 
-on:
-  release:
-    types:
-      - published
+on: push
 
 jobs:
   build:
@@ -19,12 +16,8 @@ jobs:
           python-version: '3.8'
           architecture: 'x64'
 
+      - name: Install wheel
+        run: python3 -m pip install --upgrade wheel
+
       - name: Build packages
         run: python3 setup.py sdist bdist_wheel
-
-      - name: Upload Packages to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.4.1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
-
